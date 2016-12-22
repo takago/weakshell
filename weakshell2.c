@@ -112,7 +112,7 @@ void viewToken()
 		if (m < _M-1)
 			fprintf(stderr, "PIPE:\n");
 	}
-	if (_fname0[0] == '\0')
+	if (_fname1[0] == '\0')
 		fprintf(stderr, "OUT:\t(tty)\n\n");
 	else
 		fprintf(stderr, "OUT:\t%s\n\n", _fname1);
