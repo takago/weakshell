@@ -32,21 +32,17 @@ void parseLine(char *str)
 {
 	int n = 0;
 
-	char buf[BUFSZ];
+	static char buf[BUFSZ];
 	char *p = buf;
 	char *cmd;
 	for (n = 0; n < MAX_ARGS; n++) {
-		if (_argv[n] != NULL)
-			free(_argv[n]);
 		_argv[n] = NULL;
 	}
 	strcpy(buf, str);
 	n = 0;
 	while ((cmd = strtok_r(p, " \n", &p)) != NULL) {	/* まずスペース部分で分離 */
 		/* ポインタの配列に格納 */
-		_argv[n] = malloc(BUFSZ);
-		strcpy(_argv[n], cmd);
-		n++;
+		_argv[n++] = cmd;
 	}
 }
 

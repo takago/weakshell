@@ -37,7 +37,7 @@ void parseLine(char *str)
 {
 	int n = 0;
 
-	char buf[BUFSZ];
+	static char buf[BUFSZ];
 	char *line = buf;
 	char *p;
 	char *cmd;
@@ -46,8 +46,6 @@ void parseLine(char *str)
 	int m;
 	for (n = 0; n < MAX_ARGS; n++) {
 		for (m = 0; m < MAX_CMDS; m++) {
-			if (_argv[m][n] != NULL)
-				free(_argv[m][n]);
 			_argv[m][n] = NULL;
 		}
 	}
@@ -66,9 +64,7 @@ void parseLine(char *str)
 		/* ポインタの配列に格納 */
 		n = 0;
 		while ((cmd = strtok_r(p, " ", &p)) != NULL) {
-			_argv[_M][n] = malloc(BUFSZ);
-			strcpy(_argv[_M][n], cmd);
-			n++;
+			_argv[_M][n++] = cmd;			
 		}
 		_M++;
 	}
@@ -84,7 +80,7 @@ void viewToken()
 			fprintf(stderr, "\t%s\n", _argv[m][n]);
 			n++;
 		}
-		if (m < _M)
+		if (m < _M-1)
 			fprintf(stderr, "PIPE:\n");
 	}
 	fprintf(stderr, "--------------------------------\n\x1b[39m");

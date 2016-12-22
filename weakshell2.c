@@ -41,7 +41,7 @@ void parseLine(char *str)
 {
 	int n = 0;
 
-	char buf[BUFSZ];
+	static char buf[BUFSZ];
 	char *line = buf;
 	char *p;
 	char *cmd;
@@ -53,9 +53,7 @@ void parseLine(char *str)
 
 	int m;
 	for (n = 0; n < MAX_ARGS; n++) {
-		for (m = 0; m < MAX_CMDS; m++) {
-			if (_argv[m][n] != NULL)
-				free(_argv[m][n]);
+		for (m = 0; m < MAX_CMDS; m++) {	
 			_argv[m][n] = NULL;
 		}
 	}
@@ -87,9 +85,7 @@ void parseLine(char *str)
 		/* ポインタの配列に格納 */
 		n = 0;
 		while ((cmd = strtok_r(p, " ", &p)) != NULL) {
-			_argv[_M][n] = malloc(BUFSZ);
-			strcpy(_argv[_M][n], cmd);
-			n++;
+			_argv[_M][n++] =cmd;			
 		}
 		_M++;
 		if (*fp1 != '\0')
@@ -113,7 +109,7 @@ void viewToken()
 			fprintf(stderr, "\t%s\n", _argv[m][n]);
 			n++;
 		}
-		if (m < _M)
+		if (m < _M-1)
 			fprintf(stderr, "PIPE:\n");
 	}
 	if (_fname0[0] == '\0')
@@ -178,12 +174,12 @@ void execLine()
 int main()
 {
 	char buf[BUFSZ];
-	printf("wsh>> ");
+	printf("wsh2>> ");
 	while (fgets(buf, BUFSZ, stdin) != NULL) {
 		parseLine(buf);
 		viewToken();
 		execLine();
-		printf("wsh>> ");
+		printf("wsh2>> ");
 	}
 	return 0;
 }
