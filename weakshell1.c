@@ -36,14 +36,13 @@ char *_argv[MAX_CMDS][MAX_ARGS];	// ポインタの配列
 void parseLine(char *str)
 {
 	int n = 0;
-
+	int m;
 	static char buf[BUFSZ];
 	char *line = buf;
 	char *p;
 	char *cmd;
 
 	_M = 0;
-	int m;
 	for (n = 0; n < MAX_ARGS; n++) {
 		for (m = 0; m < MAX_CMDS; m++) {
 			_argv[m][n] = NULL;
@@ -53,17 +52,9 @@ void parseLine(char *str)
 	strcpy(buf, str);
 	while ((p = strtok_r(line, "|", &line)) != NULL) {	/* まずパイプ部分で分離 */
 
-		/* 先頭の空白文字を読み飛ばす */
-		while (isspace(*p))
-			p++;
-
-		/* 末尾の空白文字を消去 */
-		while (isspace(p[strlen(p) - 1]))
-			p[strlen(p) - 1] = '\0';
-
 		/* ポインタの配列に格納 */
 		n = 0;
-		while ((cmd = strtok_r(p, " ", &p)) != NULL) {
+		while ((cmd = strtok_r(p, " \t\n", &p)) != NULL) {
 			_argv[_M][n++] = cmd;			
 		}
 		_M++;
@@ -121,7 +112,6 @@ void execLine()
 	for (m = 0; m < _M; m++) {
 		wait(NULL);
 	}
-
 }
 
 int main()
